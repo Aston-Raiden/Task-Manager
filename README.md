@@ -1,4 +1,5 @@
 Task Manager Web Application
+
 A full-featured task management web application built with Python Flask, HTML, CSS, and SQLite database.
 
 Features
@@ -18,6 +19,8 @@ Testing: Python unittest framework
 Prerequisites
 Python 3.8 or higher
 pip (Python package manager)
+
+
 Installation
 STEP 1: Download the Project Method A: Download ZIP (Easiest)
 
@@ -83,7 +86,9 @@ text
 
 Serving Flask app 'app'
 Debug mode: on
-Running on http://127.0.0.1:5000 Press CTRL+C to quit STEP 5: Open in Browser Open your web browser (Chrome, Firefox, Edge, Safari)
+Running on http://127.0.0.1:5000 Press CTRL+C to quit 
+
+STEP 5: Open in Browser Open your web browser (Chrome, Firefox, Edge, Safari)
 Go to: http://localhost:5000
 
 OR click the link in the terminal: http://127.0.0.1:5000
@@ -91,3 +96,4 @@ OR click the link in the terminal: http://127.0.0.1:5000
 Before or after testing the web application, you can run python test_app.py in the terminal to see if passes all the created unit tests
 
 STEP 6: Test the Application Test all features: Create a task: Click "Add New Task" button Edit a task: Click pencil icon on any task Delete a task: Click trash icon on any task Mark as complete: Click checkmark icon View API: Click "View API" button or go to http://localhost:5000/api/tasks
+
