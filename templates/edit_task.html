@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}{% if task %}Edit Task{% else %}Create New Task{% endif %}{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2>
+        <i class="fas {% if task %}fa-edit{% else %}fa-plus-circle{% endif %}"></i>
+        {% if task %}Edit Task{% else %}Create New Task{% endif %}
+    </h2>
+    
+    <form method="POST" class="task-form">
+        <div class="form-group">
+            <label for="title">
+                <i class="fas fa-heading"></i> Title *
+            </label>
+            <input type="text" id="title" name="title" 
+                   value="{{ task.title if task else request.form.get('title', '') }}" 
+                   required
+                   placeholder="Enter task title">
+        </div>
+        
+        <div class="form-group">
+            <label for="description">
+                <i class="fas fa-align-left"></i> Description
+            </label>
+            <textarea id="description" name="description" rows="4"
+                      placeholder="Enter task description (optional)">{{ task.description if task else request.form.get('description', '') }}</textarea>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="priority">
+                    <i class="fas fa-flag"></i> Priority
+                </label>
+                <select id="priority" name="priority" class="priority-select">
+                    {% for i in range(1, 6) %}
+                        <option value="{{ i }}" 
+                                {% if task and task.priority == i %}selected{% endif %}
+                                {% if not task and i == 3 %}selected{% endif %}
+                                {% if request.form.get('priority')|int == i %}selected{% endif %}>
+                            Priority {{ i }} {% if i == 1 %}(Highest){% elif i == 5 %}(Lowest){% endif %}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="due_date">
+                    <i class="fas fa-calendar-alt"></i> Due Date
+                </label>
+                <input type="date" id="due_date" name="due_date"
+                       value="{{ task.due_date if task else request.form.get('due_date', '') }}"
+                       min="{{ now().strftime('%Y-%m-%d') }}">
+            </div>
+        </div>
+        
+        {% if task %}
+            <div class="form-group">
+                <label>
+                    <i class="fas fa-check-circle"></i> Status
+                </label>
+                <div class="status-info">
+                    {% if task.completed %}
+                        <span class="status-badge completed">Completed</span>
+                    {% else %}
+                        <span class="status-badge pending">Pending</span>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+        
+        <div class="form-actions">
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Cancel
+            </a>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> 
+                {% if task %}Update Task{% else %}Create Task{% endif %}
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+// Set minimum date to today
+document.addEventListener('DOMContentLoaded', function() {
+    const today = new Date().toISOString().split('T')[0];
+    const dueDateInput = document.getElementById('due_date');
+    if (dueDateInput && !dueDateInput.value) {
+        dueDateInput.min = today;
+    }
+    
+    // Color code priority selector
+    const prioritySelect = document.getElementById('priority');
+    if (prioritySelect) {
+        function updatePriorityColor() {
+            const value = parseInt(prioritySelect.value);
+            prioritySelect.className = 'priority-select priority-' + value;
+        }
+        
+        updatePriorityColor();
+        prioritySelect.addEventListener('change', updatePriorityColor);
+    }
+});
+</script>
+{% endblock %}
